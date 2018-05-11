@@ -3,14 +3,13 @@ package br.pegz.tutorials.rightcourt.configuration;
 import br.pegz.tutorials.rightcourt.configuration.model.Probe;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Mono;
 
 @Configuration
 public class ProbeConfiguration {
 
-    private final CourtConfiguration court;
+    private final CourtRestConfiguration court;
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -22,7 +21,7 @@ public class ProbeConfiguration {
     @Value("${spring.rabbitmq.port}")
     public int rabbitMQPort = 5672;
 
-    public ProbeConfiguration(CourtConfiguration court, RabbitTemplate rabbitTemplate) {
+    public ProbeConfiguration(CourtRestConfiguration court, RabbitTemplate rabbitTemplate) {
         this.court = court;
         this.rabbitTemplate = rabbitTemplate;
     }
@@ -39,7 +38,7 @@ public class ProbeConfiguration {
         return Mono.just(Probe.builder()
                 .description("Left Player Integration Micro-Service Integration")
                 .status(court.checkLeftCourtStatus())
-                .endpoint(CourtConfiguration.LEFT_COURT_BASE)
+                .endpoint(CourtRestConfiguration.LEFT_COURT_BASE)
                 .build());
     }
 

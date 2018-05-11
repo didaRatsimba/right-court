@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 @Configuration
-public class CourtConfiguration {
+public class CourtRestConfiguration {
 
     @Autowired
     private RestTemplate restTemplate;
