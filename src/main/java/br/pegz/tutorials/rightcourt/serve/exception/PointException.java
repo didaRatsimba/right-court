@@ -11,9 +11,9 @@ public class PointException extends Throwable {
         super("Point for side: " + side);
         this.message = "Point for side: " + side;
         if(Side.LEFT == side) {
-            code += 10;
+            code += 101;
         } else if (Side.RIGHT == side){
-            code += 11;
+            code += 102;
         }
     }
 
