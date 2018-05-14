@@ -1,4 +1,4 @@
-package br.pegz.tutorials.rightcourt.serve;
+package br.pegz.tutorials.rightcourt.serve.service;
 
 import br.pegz.tutorials.rightcourt.persistence.Play;
 import br.pegz.tutorials.rightcourt.persistence.enums.Height;

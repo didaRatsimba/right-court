@@ -1,7 +1,7 @@
 package br.pegz.tutorials.rightcourt.serve.controller;
 
 import br.pegz.tutorials.rightcourt.persistence.Play;
-import br.pegz.tutorials.rightcourt.serve.PlayService;
+import br.pegz.tutorials.rightcourt.serve.service.PlayService;
 import br.pegz.tutorials.rightcourt.serve.exception.PointException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
