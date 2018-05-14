@@ -13,9 +13,8 @@ public class CourtConfiguration {
     @Autowired
     private RestTemplate restTemplate;
 
-    public static String LEFT_COURT_BASE  = "http://localhost:5000/left";
-    public static String LEFT_PLAY = LEFT_COURT_BASE + "/play";
-
+    public static String LEFT_COURT_BASE  = "http://localhost:5000";
+    public static String LEFT_PLAY = LEFT_COURT_BASE + "/left/play";
 
     public boolean checkLeftCourtStatus() {
         return Optional.ofNullable(
