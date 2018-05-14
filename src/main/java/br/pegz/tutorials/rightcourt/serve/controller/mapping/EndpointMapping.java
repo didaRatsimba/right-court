@@ -1,4 +1,4 @@
-package br.pegz.tutorials.rightcourt.serve.controller.reactive;
+package br.pegz.tutorials.rightcourt.serve.controller.mapping;
 
 import br.pegz.tutorials.rightcourt.configuration.ProbeConfiguration;
 import br.pegz.tutorials.rightcourt.configuration.model.Probe;
