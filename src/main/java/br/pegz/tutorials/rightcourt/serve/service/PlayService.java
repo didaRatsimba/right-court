@@ -18,11 +18,11 @@ import java.util.Random;
 
 @Slf4j
 @Service
-public class PlayService {
+public final class PlayService {
 
-    private CourtResource courtResource;
-    private Random random = new SecureRandom();
-    private ScoreNotifierService scoreNotifierService;
+    private final CourtResource courtResource;
+    private final Random random = new SecureRandom();
+    private final ScoreNotifierService scoreNotifierService;
 
     public PlayService(CourtResource courtResource, ScoreNotifierService scoreNotifierService) {
         this.courtResource = courtResource;
@@ -31,13 +31,13 @@ public class PlayService {
 
     public Flux<Play> serve() throws PointException {
         List<Play> plays = Lists.newArrayList(getServePlay());
-        Play incomingPlay = courtResource.sendPlayToOtherSide(getServePlay());
+        Play incomingPlay = courtResource.sendAndRetrieve(getServePlay());
         while (canContinuePlay(incomingPlay)) {
             log.info("Received play: {}", incomingPlay);
             plays.add(incomingPlay);
             Play myPlay = handlePlay(incomingPlay);
             plays.add(myPlay);
-            incomingPlay = courtResource.sendPlayToOtherSide(myPlay);
+            incomingPlay = courtResource.sendAndRetrieve(myPlay);
         }
         notifyPoint(incomingPlay);
         return Flux.fromStream(plays.stream());
@@ -64,9 +64,9 @@ public class PlayService {
     }
 
     private Play getRespondSpeed(Play incomingPlay) {
-        Speed responseSpeed = Speed.values()[random.nextInt(Speed.values().length)];
-        Height responseHeight = Height.values()[random.nextInt(Height.values().length)];
-        Side responseInnerSide = Side.values()[random.nextInt(Side.values().length)];
+        Speed responseSpeed = Speed.random();
+        Height responseHeight = Height.random();
+        Side responseInnerSide = Side.random();
         return Play.builder()
                 .count(incomingPlay.getCount()+1)
                 .effect(!incomingPlay.getEffect())
