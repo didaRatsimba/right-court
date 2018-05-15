@@ -1,4 +1,4 @@
-package br.pegz.tutorials.rightcourt.serve.controller;
+package br.pegz.tutorials.rightcourt.serve.exception;
 
 import br.pegz.tutorials.rightcourt.serve.exception.PointException;
 import lombok.extern.slf4j.Slf4j;
