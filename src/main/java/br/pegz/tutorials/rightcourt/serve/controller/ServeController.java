@@ -20,7 +20,7 @@ public class ServeController {
     }
 
     @PostMapping("/serve")
-    public ResponseEntity<String> startPlay() throws PointException {
+    public ResponseEntity<String> startPlay() {
         log.info("Starting Serve");
         playService.serve();
         return ResponseEntity.ok("Started game");
