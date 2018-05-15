@@ -31,7 +31,7 @@ public class EndpointMapping {
     }
 
     private Mono<ServerResponse> handleAllProbes(ServerRequest serverRequest) {
-        Flux<Probe> probeFlux = Flux.concat(probeConfiguration.rabbitMQProbe(), probeConfiguration.leftPlayerProbe());
+        Flux<Probe> probeFlux = Flux.concat(probeConfiguration.rabbitMQProbe());
         return ServerResponse.ok().body(probeFlux, Probe.class);
     }
 }

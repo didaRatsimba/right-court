@@ -10,8 +10,6 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class ProbeConfiguration {
 
-    private final CourtConfiguration court;
-
     private final RabbitTemplate rabbitTemplate;
 
 
@@ -22,8 +20,7 @@ public class ProbeConfiguration {
     @Value("${spring.rabbitmq.port}")
     public int rabbitMQPort = 5672;
 
-    public ProbeConfiguration(CourtConfiguration court, RabbitTemplate rabbitTemplate) {
-        this.court = court;
+    public ProbeConfiguration(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
@@ -34,13 +31,4 @@ public class ProbeConfiguration {
                 .endpoint(String.format("mq://%s:%s",rabbitMQHost,rabbitMQPort))
                 .build());
     }
-
-    public Mono<Probe> leftPlayerProbe() {
-        return Mono.just(Probe.builder()
-                .description("Left Player Integration Micro-Service Integration")
-                .status(court.checkLeftCourtStatus())
-                .endpoint(CourtConfiguration.LEFT_COURT_BASE)
-                .build());
-    }
-
 }
