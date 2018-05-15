@@ -7,45 +7,43 @@ import br.pegz.tutorials.rightcourt.persistence.enums.Side;
 import br.pegz.tutorials.rightcourt.persistence.enums.Speed;
 import br.pegz.tutorials.rightcourt.score.ScoreNotifierService;
 import br.pegz.tutorials.rightcourt.serve.exception.PointException;
-import br.pegz.tutorials.rightcourt.serve.resource.CourtResource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.cloud.stream.reactive.StreamEmitter;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
-
-import java.security.SecureRandom;
-import java.util.Random;
 
 @Slf4j
 @Service
 public final class PlayService {
 
-    private final CourtResource courtResource;
     private final ScoreNotifierService scoreNotifierService;
 
-    public PlayService(CourtResource courtResource, ScoreNotifierService scoreNotifierService) {
-        this.courtResource = courtResource;
+    public PlayService(ScoreNotifierService scoreNotifierService) {
         this.scoreNotifierService = scoreNotifierService;
     }
 
-    public void serve() {
-        courtResource.sendPlay(Play.builder()
+    @StreamEmitter
+    @SendTo(PlayExchange.PLAY_OUTPUT)
+    public Play serve() {
+        return Play.builder()
                 .count(0)
                 .effect(true)
                 .height(Height.LOW)
                 .speed(Speed.FAST)
                 .incomingSide(Side.RIGHT)
                 .innerSide(Side.RIGHT)
-                .build());
+                .build();
     }
 
     @StreamListener(PlayExchange.PLAY_INPUT)
-    public void handlePlay(Play incomingPlay) throws PointException {
-        if(canContinuePlay(incomingPlay)) {
-            courtResource.sendPlay(buildResponsePlay(incomingPlay));
-        } else {
-            notifyPoint(incomingPlay);
+    @SendTo(PlayExchange.PLAY_OUTPUT)
+    public Play handlePlay(Play incomingPlay) throws PointException {
+        if (canContinuePlay(incomingPlay)) {
+            return buildResponsePlay(incomingPlay);
         }
+        notifyPoint(incomingPlay);
+        return null;
     }
 
     private boolean canContinuePlay(Play incomingPlay) {
@@ -56,7 +54,7 @@ public final class PlayService {
         if (isLeftPoint(incomingPlay)) {
             scoreNotifierService.notifyFoePoint(incomingPlay.getCount());
             throw new PointException(Side.LEFT);
-        } else if (isRightPoint(incomingPlay)) {
+        } else {
             scoreNotifierService.notifyMyPoint(incomingPlay.getCount());
             throw new PointException(Side.RIGHT);
         }
