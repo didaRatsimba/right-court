@@ -29,7 +29,14 @@ public final class PlayService {
     }
 
     public void serve() {
-        courtResource.sendPlay(getServePlay());
+        courtResource.sendPlay(Play.builder()
+                .count(0)
+                .effect(true)
+                .height(Height.LOW)
+                .speed(Speed.FAST)
+                .incomingSide(Side.RIGHT)
+                .innerSide(Side.RIGHT)
+                .build());
     }
 
     @StreamListener(PlayExchange.PLAY_INPUT)
@@ -71,17 +78,6 @@ public final class PlayService {
                 .height(Height.random())
                 .incomingSide(Side.RIGHT)
                 .innerSide(Side.random())
-                .build();
-    }
-
-    private Play getServePlay() {
-        return Play.builder()
-                .count(0)
-                .effect(true)
-                .height(Height.LOW)
-                .speed(Speed.FAST)
-                .incomingSide(Side.RIGHT)
-                .innerSide(Side.RIGHT)
                 .build();
     }
 }
