@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class PlayerService {
+public final class PlayerService {
 
     public Play play(Play incomingPlay) throws PointException {
         if (canContinuePlay(incomingPlay)) {
